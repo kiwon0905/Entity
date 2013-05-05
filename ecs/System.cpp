@@ -14,9 +14,9 @@ BaseSystem::~BaseSystem()
 
 void BaseSystem::init(EventManager & em)
 {
-	em.listenTo<EntityAddedEvent>(this);
-	em.listenTo<EntityChangedEvent>(this);
-	em.listenTo<EntityRemovedEvent>(this);
+	em.listenTo<EntityAddedEvent>(this, &BaseSystem::receive);
+	em.listenTo<EntityChangedEvent>(this, &BaseSystem::receive);
+	em.listenTo<EntityRemovedEvent>(this, &BaseSystem::receive);
 }
 
 void BaseSystem::setWorld(World * world)
