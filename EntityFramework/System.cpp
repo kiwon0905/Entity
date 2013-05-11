@@ -47,7 +47,7 @@ bool BaseSystem::hasEntity(Entity * e)
 	return entityTable.count(e)==1;
 }
 
-void BaseSystem::process(EventManager & em, double dt)
+void BaseSystem::update(EventManager & em, double dt)
 {
 	for(std::size_t i=0; i<added.size(); ++i)
 		addEntity(added[i]);

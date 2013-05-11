@@ -45,5 +45,5 @@ void World::addSystem(BaseSystem * newSystem)
 void World::step(double dt)
 {
 	for(std::size_t i=0; i<systems.size(); ++i)
-		systems[i]->process(eventManager, dt);
+		systems[i]->update(eventManager, dt);
 }

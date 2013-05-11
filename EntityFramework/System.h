@@ -23,7 +23,7 @@ private:
 
 	void addEntity(Entity * e);
 	void removeEntity(Entity * e);
-	void process(EventManager & em, double dt);
+	void update(EventManager & em, double dt);
 
 	virtual bool isInterested(Entity * e)=0;
 protected:

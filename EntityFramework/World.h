@@ -24,5 +24,14 @@ public:
 	void addSystem(BaseSystem * newSystem);
 	Entity * createEntity();
 	void step(double dt);
+
+	template <class T>
+	T & getSystem();
 };
+
+template <class T>
+T & World::getSystem()
+{
+	return static_cast<T>(*systems[T::getIndex()]);
+}
 
