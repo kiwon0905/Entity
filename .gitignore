@@ -45,6 +45,8 @@ local.properties
 *.vcxproj.filters
 *.sln
 
+*.gitattributes
+*.gitignore
 
 # Build results
 [Dd]ebug/
