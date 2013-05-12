@@ -1,6 +1,7 @@
 #include "System.h"
 #include "EventManager.h"
-#include <iostream>
+#include "Event.h"
+
 namespace ef
 {
 

@@ -2,12 +2,12 @@
 #include "Bag.h"
 #include "System.h"
 #include <functional>
-
+ 
 namespace ef
 {
 
 class BaseEvent;
-
+ 
 
 class EventManager
 {

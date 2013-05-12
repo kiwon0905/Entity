@@ -4,12 +4,16 @@
 
 #include "VisualLeakDetector/vld.h"
 
-using namespace ef;
+using namespace ef;     
 
 
 struct TurnedZombieEvent : public Event<TurnedZombieEvent>
 {
 	 
+};
+
+struct ZombieThrewUpEvent : public Event<ZombieThrewUpEvent>
+{
 };
 
 struct ZombieComponent : public Component<ZombieComponent>
@@ -30,12 +34,19 @@ class ZombieSystem : public System<ZombieSystem>
 	{
 		System::init(em);
 		em.listenTo<TurnedZombieEvent>(this, &ZombieSystem::receive);
+		em.listenTo<ZombieThrewUpEvent>(this, &ZombieSystem::receive);
 	}
 
 	void receive(TurnedZombieEvent & ev)
 	{
 		std::cout<<"A human turned into a zombie!\n";
 	}
+
+	void receive(ZombieThrewUpEvent & ev)
+	{
+		std::cout<<"A zombie threw up!\n";
+	}
+
 
 	bool isInterested(Entity * e)
 	{
@@ -45,12 +56,15 @@ class ZombieSystem : public System<ZombieSystem>
 	void processEntity(Entity * e, EventManager & em, double dt)
 	{
 		int & health=e->getComponent<ZombieComponent>()->health;
+		
 		if(health < 0)
 		{
 			e->removeFromWorld();
 		}
 		else
 		{
+			if(health==1)
+				em.emit(ZombieThrewUpEvent());
 			std::cout<<"Zombie hp: "<<health<<"\n";
 			health-=1;
 		}
@@ -92,7 +106,7 @@ int main()
 	world.init();
 	
 
-	for (int i=0; i<5; ++i)
+	for (int i=0; i<1; ++i)
 	{
 		Entity * e=world.createEntity();
 		e->addComponent(new HumanComponent(i));
@@ -100,7 +114,7 @@ int main()
 	}
 	
 
-	for(int i=0; i<100; ++i)
+	for(int i=0; i<10; ++i)
 	{
 		world.step(1);
 	}

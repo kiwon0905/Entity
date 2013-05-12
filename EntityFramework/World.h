@@ -2,7 +2,7 @@
 #include "EntityManager.h"
 #include "EventManager.h"
 #include "Bag.h"
-
+  
 namespace ef
 {
 

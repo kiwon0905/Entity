@@ -1,6 +1,4 @@
 #include "World.h"
-#include "EntityManager.h"
-#include "System.h"
 namespace ef
 {
 

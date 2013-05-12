@@ -2,13 +2,15 @@
 #include <cstddef>
 #include <unordered_set>
 #include "Bag.h"
-#include "Event.h"
 
 namespace ef
 {
 
 class Entity;
 class EventManager;
+class EntityRemovedEvent;
+class EntityChangedEvent;
+class EntityAddedEvent;
 
 class BaseSystem
 {
