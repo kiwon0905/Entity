@@ -2,6 +2,8 @@
 #include <cstddef>
 #include "Bag.h"
 
+namespace ef
+{
 
 class BaseComponent;
 class Entity
@@ -76,4 +78,6 @@ void Entity::addComponent(T * newComponent)
 
 	if(isActive())
 		world->eventManager.emit(EntityChangedEvent(this));
+}
+
 }

@@ -1,6 +1,10 @@
 #pragma once
 #include <cstddef>
 
+namespace ef
+{
+
+
 class BaseComponent 
 {
 protected:
@@ -24,4 +28,6 @@ std::size_t Component<T>::getIndex()
 {
 	static std::size_t index=counter++;
 	return index;
+}
+
 }

@@ -3,6 +3,9 @@
 #include "System.h"
 #include <functional>
 
+namespace ef
+{
+
 class BaseEvent;
 
 
@@ -58,3 +61,4 @@ void EventManager::emit(E & event)
 		callBacks[E::getIndex()][i].operator()(event);
 }
 
+}

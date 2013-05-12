@@ -4,6 +4,9 @@
 #include "Bag.h"
 #include "Event.h"
 
+namespace ef
+{
+
 class Entity;
 class EventManager;
 
@@ -57,4 +60,6 @@ std::size_t System<T>::getIndex()
 {
 	static std::size_t index=counter++;
 	return index;
+}
+
 }

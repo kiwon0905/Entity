@@ -4,6 +4,8 @@
 
 #include "VisualLeakDetector/vld.h"
 
+using namespace ef;
+
 
 struct TurnedZombieEvent : public Event<TurnedZombieEvent>
 {

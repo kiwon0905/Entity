@@ -1,6 +1,8 @@
 #include "World.h"
 #include "EntityManager.h"
 #include "System.h"
+namespace ef
+{
 
 
 World::World():entityManager(this)
@@ -46,4 +48,6 @@ void World::step(double dt)
 {
 	for(std::size_t i=0; i<systems.size(); ++i)
 		systems[i]->update(eventManager, dt);
+}
+
 }

@@ -1,6 +1,8 @@
 #include "System.h"
 #include "EventManager.h"
 #include <iostream>
+namespace ef
+{
 
 std::size_t BaseSystem::counter=0;
 
@@ -102,3 +104,4 @@ World * BaseSystem::getWorld()
 }
 
 
+}

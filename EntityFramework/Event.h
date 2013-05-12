@@ -1,6 +1,9 @@
 #pragma once
 #include <cstddef>
 
+namespace ef
+{
+
 class Entity;
 
 class BaseEvent
@@ -50,3 +53,4 @@ public:
 	EntityChangedEvent(Entity * e);
 };
 
+}

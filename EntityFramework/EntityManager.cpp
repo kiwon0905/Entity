@@ -1,6 +1,9 @@
 #include "EntityManager.h"
 #include "Entity.h"
 
+namespace ef
+{
+
 EntityManager::IDPool::IDPool():nextAvailableID(0)
 {
 }
@@ -73,4 +76,6 @@ void EntityManager::remove(Entity * e)
 	activeEntities[e->getID()]=nullptr;
 	e->removeAllComponents();
 	removedEntities.add(e);
+}
+
 }

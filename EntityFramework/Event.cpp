@@ -1,5 +1,8 @@
 #include "Event.h"
 
+namespace ef
+{
+
 std::size_t BaseEvent::counter=0;
 
 
@@ -9,3 +12,4 @@ EntityRemovedEvent::EntityRemovedEvent(Entity * e_):e(e_){}
 
 EntityChangedEvent::EntityChangedEvent(Entity * e_):e(e_){}
 
+}

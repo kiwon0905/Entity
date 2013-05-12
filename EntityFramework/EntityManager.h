@@ -2,6 +2,9 @@
 #include "Bag.h"
 #include <set>
 
+namespace ef
+{
+
 class World;
 class Entity;
 
@@ -46,3 +49,4 @@ public:
 
 };
 
+}

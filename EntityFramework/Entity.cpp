@@ -3,6 +3,9 @@
 #include "Component.h"
 #include "Event.h"
 
+namespace ef
+{
+
 Entity::Entity(std::size_t id_, World * world_):id(id_), world(world_) 
 {
 }
@@ -46,4 +49,6 @@ void Entity::removeFromWorld()
 {
 	world->removeEntity(this);
 	world->eventManager.emit(EntityRemovedEvent(this));
+}
+
 }

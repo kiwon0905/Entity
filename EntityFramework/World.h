@@ -3,6 +3,8 @@
 #include "EventManager.h"
 #include "Bag.h"
 
+namespace ef
+{
 
 class BaseSystem;
 
@@ -35,3 +37,4 @@ T & World::getSystem()
 	return static_cast<T>(*systems[T::getIndex()]);
 }
 
+}
