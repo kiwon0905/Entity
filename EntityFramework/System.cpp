@@ -1,6 +1,7 @@
 #include "System.h"
 #include "EventManager.h"
 #include "Event.h"
+#include "World.h"
 
 namespace ef
 {
@@ -50,7 +51,7 @@ bool BaseSystem::hasEntity(Entity * e)
 	return entityTable.count(e)==1;
 }
 
-void BaseSystem::update(EventManager & em, double dt)
+void BaseSystem::step(double dt)
 {
 	for(std::size_t i=0; i<added.size(); ++i)
 		addEntity(added[i]);
@@ -63,7 +64,7 @@ void BaseSystem::update(EventManager & em, double dt)
 	removed.clear();
 
 	for(std::size_t i=0; i<activeEntities.size(); ++i)
-		processEntity(activeEntities[i], em, dt);
+		processEntity(activeEntities[i], world->eventManager, dt);
 
 }
 
@@ -99,10 +100,10 @@ void BaseSystem::receive(EntityRemovedEvent & e)
 	}
 }
 
-World * BaseSystem::getWorld()
-{
-	return world;
-}
 
+World & BaseSystem::getWorld()
+{
+	return *world;
+}
 
 }

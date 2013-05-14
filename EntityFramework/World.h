@@ -6,11 +6,10 @@
 namespace ef
 {
 
-class BaseSystem;
-
 class World
 {
 	friend class Entity;
+	friend class BaseSystem;
 private:
 	EntityManager entityManager;
 	EventManager eventManager;
@@ -23,18 +22,28 @@ public:
 	~World();
 
 	void init();
-	void addSystem(BaseSystem * newSystem);
+
 	Entity * createEntity();
-	void step(double dt);
+
+	template <class S>
+	void addSystem(S * newSystem);
 
 	template <class T>
 	T & getSystem();
 };
 
+template <class S>
+void World::addSystem(S * newSystem)
+{
+	systems.ensureSize(S::getIndex()+1);
+	systems[S::getIndex()]=newSystem;
+	newSystem->setWorld(this);
+}
+
 template <class T>
 T & World::getSystem()
 {
-	return static_cast<T>(*systems[T::getIndex()]);
+	return static_cast<T&>(*systems[T::getIndex()]);
 }
 
 }

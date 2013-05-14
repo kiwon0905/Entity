@@ -1,4 +1,7 @@
 #include "World.h"
+#include "System.h"
+
+
 namespace ef
 {
 
@@ -34,18 +37,6 @@ void World::init()
 {
 	for(std::size_t i=0; i<systems.size(); ++i)
 		systems[i]->init(eventManager);
-}
-
-void World::addSystem(BaseSystem * newSystem)
-{
-	systems.add(newSystem);
-	newSystem->setWorld(this);
-}
-
-void World::step(double dt)
-{
-	for(std::size_t i=0; i<systems.size(); ++i)
-		systems[i]->update(eventManager, dt);
 }
 
 }

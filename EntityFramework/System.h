@@ -28,24 +28,23 @@ private:
 
 	void addEntity(Entity * e);
 	void removeEntity(Entity * e);
-	void update(EventManager & em, double dt);
 
 	virtual bool isInterested(Entity * e)=0;
-protected:
+	
+	virtual void processEntity(Entity * e, EventManager & em, double dt)=0;
+protected:	
+	virtual void receive(EntityAddedEvent & e);
+	virtual void receive(EntityChangedEvent & e);
+	virtual void receive(EntityRemovedEvent & e);
 	static std::size_t counter;
 public:
 	BaseSystem();
 	virtual ~BaseSystem();
 
-	World * getWorld();
-
-	virtual void receive(EntityAddedEvent & e);
-	virtual void receive(EntityChangedEvent & e);
-	virtual void receive(EntityRemovedEvent & e);
-
 	virtual void init(EventManager & em);
-	virtual void processEntity(Entity * e, EventManager & em, double dt)=0;
+	void step(double dt);
 
+	World & getWorld();
 };
 
 template <class T>

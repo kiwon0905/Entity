@@ -1,6 +1,5 @@
 #pragma once
 #include "Bag.h"
-#include "System.h"
 #include <functional>
  
 namespace ef

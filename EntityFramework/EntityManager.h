@@ -4,7 +4,7 @@
 
 namespace ef
 {
-
+	  
 class World;
 class Entity;
 
