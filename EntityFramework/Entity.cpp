@@ -1,54 +1,29 @@
 #include "Entity.h"
-#include "World.h"
-#include "Component.h"
-#include "Event.h"
+#include "Ecs.h"
 
-namespace ef
+Entity::Entity(Entity::Id id) :m_id(id)
 {
-
-Entity::Entity(std::size_t id_, World * world_):id(id_), world(world_) 
-{
+	m_components.resize(MAX_COMPONENTS);
 }
+
 
 Entity::~Entity()
 {
-	for(std::size_t i=0; i<components.size(); ++i)
-	{
-		delete components[i];
-	}
 }
 
-std::size_t Entity::getID()
-{
-	return id;
-}
-
-bool Entity::isActive()
-{
-	return world->entityManager.isActive(this);
-}
 
 void Entity::removeAllComponents()
 {
-	for(std::size_t i=0; i<components.size(); ++i)
-	{
-		delete components[i];
-		components[i]=nullptr;			
-	}
-	if(isActive())
-		world->eventManager.emit(EntityChangedEvent(this));
+	for (auto & c : m_components)
+		c.reset(nullptr);
 }
 
-void Entity::addToWorld()
+Entity::Id Entity::getId()
 {
-	world->addEntity(this);
-	world->eventManager.emit(EntityAddedEvent(this));
+	return m_id;
 }
 
-void Entity::removeFromWorld()
+void Entity::setId(Entity::Id id)
 {
-	world->removeEntity(this);
-	world->eventManager.emit(EntityRemovedEvent(this));
-}
-
+	m_id = id;
 }

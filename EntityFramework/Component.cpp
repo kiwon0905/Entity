@@ -1,8 +1,3 @@
 #include "Component.h"
 
-namespace ef
-{
-
-std::size_t BaseComponent::counter=0;
-
-}
+std::size_t BaseComponent::counter = 0;

@@ -1,66 +1,27 @@
 #pragma once
-#include <cstddef>
-#include <unordered_set>
-#include "Bag.h"
-
-namespace ef
-{
+#include <vector>
 
 class Entity;
-class EventManager;
-class EntityRemovedEvent;
-class EntityChangedEvent;
-class EntityAddedEvent;
 
-class BaseSystem
+class System
 {
-	friend class World;
-private:
-	World * world;
-	Bag<Entity *> added;
-	Bag<Entity *> removed;
-	Bag<Entity *> activeEntities;
+public:
+	friend class EntityWorld;
 
-	std::unordered_set<Entity *> entityTable;
+	System();
+	virtual ~System();
 
+	virtual bool isInterested(Entity * e) = 0;
+	virtual void update(EntityWorld & w, float dt) = 0;
+	std::vector<Entity *> getEntities();
+private:	
 	bool hasEntity(Entity * e);
-	void setWorld(World * world);
 
-	void addEntity(Entity * e);
+	void refreshEntity(Entity * e);
 	void removeEntity(Entity * e);
+	void addEntity(Entity * e);
 
-	virtual bool isInterested(Entity * e)=0;
-	
-	virtual void processEntity(Entity * e, EventManager & em, double dt)=0;
-protected:	
-	virtual void receive(EntityAddedEvent & e);
-	virtual void receive(EntityChangedEvent & e);
-	virtual void receive(EntityRemovedEvent & e);
-	static std::size_t counter;
-public:
-	BaseSystem();
-	virtual ~BaseSystem();
+	std::vector<Entity*> m_entities;
 
-	virtual void init(EventManager & em);
-	void step(double dt);
-
-	World & getWorld();
 };
 
-template <class T>
-class System : public BaseSystem
-{
-public:
-	System(){}
-	~System(){}
-	static std::size_t getIndex();
-};
-
-template <class T>
-std::size_t System<T>::getIndex()
-{
-	static std::size_t index=counter++;
-	return index;
-}
-
-}

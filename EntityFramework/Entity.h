@@ -1,82 +1,57 @@
 #pragma once
-#include "Bag.h"
+#include <vector>
+#include <memory>
+#include "Component.h"
 
-namespace ef
-{
-
-class BaseComponent;
 class Entity
 {
-	friend class World;
-private:
-	std::size_t id;
-	World * world;
-	Bag<BaseComponent *> components;
 public:
-	Entity(std::size_t id, World * world);
+	typedef std::size_t Id;
+	Entity(Entity::Id id);
 	~Entity();
 
-	std::size_t getID();
-	
 	template <class T>
 	bool hasComponent();
 
 	template <class T>
 	T * getComponent();
 
+	template <class C, class ... Args>
+	void addComponent(Args && ...args);
+
 	template <class T>
 	void removeComponent();
 
 	void removeAllComponents();
 
-	template <class T>
-	void addComponent(T * newComponent);
-
-	void addToWorld();
-
-	void removeFromWorld();
-
-	bool isActive();
-
+	Entity::Id getId();
+	void setId(Entity::Id id);
+private:
+	std::vector<std::unique_ptr<BaseComponent>> m_components;
+	Entity::Id m_id;
 };
 
-template <class T>
+template <class C>
 bool Entity::hasComponent()
 {
-	return getComponent<T>()!=nullptr;
+	return getComponent<C>()!=nullptr;
 }
 
-template <class T>
-T * Entity::getComponent()
+template <class C>
+C * Entity::getComponent()
 {
-	if(components.size()<T::getIndex()+1)
-		return nullptr;
-	return static_cast<T*>(components[T::getIndex()]);
+	return static_cast<C*>(m_components[C::getIndex()].get());
 }
 
-template <class T>
+template <class C, class ... Args>
+void Entity::addComponent(Args && ...args)
+{
+	m_components[C::getIndex()].reset(new C(std::forward<Args>(args)...));
+}
+
+template <class C>
 void Entity::removeComponent()
 {
-	if(!(components.size()<T::getIndex()+1))
-	{
-		delete components[T::getIndex()];
-		components[T::getIndex()]=nullptr;
-	}
-	if(isActive())
-		world->eventManager.emit(EntityChangedEvent(this));
-
+	m_components[C::getIndex()].reset(nullptr);
 }
 
-template <class T>
-void Entity::addComponent(T * newComponent)
-{
-	components.ensureSize(T::getIndex()+1);	
-	//if entity already has this component, it deletes it first
-	delete components[T::getIndex()];
-	components[T::getIndex()]=newComponent;
-
-	if(isActive())
-		world->eventManager.emit(EntityChangedEvent(this));
-}
-
-}

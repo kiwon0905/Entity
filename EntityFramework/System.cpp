@@ -1,109 +1,53 @@
 #include "System.h"
-#include "EventManager.h"
-#include "Event.h"
-#include "World.h"
 
-namespace ef
-{
 
-std::size_t BaseSystem::counter=0;
-
-BaseSystem::BaseSystem(): world(nullptr)
+System::System()
 {
 }
 
-BaseSystem::~BaseSystem()
+
+System::~System()
 {
 }
 
-void BaseSystem::init(EventManager & em)
+std::vector<Entity*> System::getEntities()
 {
-	em.listenTo<EntityAddedEvent>(this, &BaseSystem::receive);
-	em.listenTo<EntityChangedEvent>(this, &BaseSystem::receive);
-	em.listenTo<EntityRemovedEvent>(this, &BaseSystem::receive);
+	return m_entities;
 }
 
-void BaseSystem::setWorld(World * world)
+void System::addEntity(Entity * e)
 {
-	this->world=world;
+	if (isInterested(e))
+		m_entities.push_back(e);
 }
 
-void BaseSystem::addEntity(Entity * e)
+void System::refreshEntity(Entity * e)
 {
-	activeEntities.add(e);
+	if (isInterested(e))
+	{
+		if (!hasEntity(e))
+			m_entities.push_back(e);
+	}
+	else
+		removeEntity(e);
 }
 
-void BaseSystem::removeEntity(Entity * e)
+void System::removeEntity(Entity * e)
 {
-	//remove by value
-		for(std::size_t i=0; i<activeEntities.size(); ++i)
+	for (auto iter = m_entities.begin(); iter != m_entities.end(); ++iter)
+	{
+		if (*iter == e)
 		{
-			if(activeEntities[i]==e)
-			{
-				activeEntities.remove(i);
-				break;
-			}
+			m_entities.erase(iter);
+			break;
 		}
-}
-
-bool BaseSystem::hasEntity(Entity * e)
-{
-	return entityTable.count(e)==1;
-}
-
-void BaseSystem::step(double dt)
-{
-	for(std::size_t i=0; i<added.size(); ++i)
-		addEntity(added[i]);
-
-	//!Order is important
-	for(std::size_t i=0; i<removed.size(); ++i)
-		removeEntity(removed[i]);
-
-	added.clear();
-	removed.clear();
-
-	for(std::size_t i=0; i<activeEntities.size(); ++i)
-		processEntity(activeEntities[i], world->eventManager, dt);
-
-}
-
-void BaseSystem::receive(EntityAddedEvent & e)
-{
-	if(isInterested(e.e))
-	{
-		added.add(e.e);
-		entityTable.insert(e.e);
 	}
 }
 
-void BaseSystem::receive(EntityChangedEvent & e)
+bool System::hasEntity(Entity * e)
 {
-	if(hasEntity(e.e) && !isInterested(e.e))
-	{
-		removed.add(e.e);
-		entityTable.erase(e.e);
-	}
-	else if( !(hasEntity(e.e)) && isInterested(e.e))
-	{
-		added.add(e.e);
-		entityTable.insert(e.e);
-	}
-}
-
-void BaseSystem::receive(EntityRemovedEvent & e)
-{
-	if(hasEntity(e.e))
-	{
-		removed.add(e.e);
-		entityTable.erase(e.e);
-	}
-}
-
-
-World & BaseSystem::getWorld()
-{
-	return *world;
-}
-
+	for (Entity * e2 : m_entities)
+		if (e2 == e)
+			return true;
+	return false;
 }
